@@ -105,24 +105,14 @@ def test_sort_order_controls_sequence_within_slot():
 
 # --- Core behavior: mark_complete queues next occurrence ---
 
-def test_mark_complete_queues_next_occurrence_for_daily():
+def test_mark_complete_does_not_duplicate_task():
     pet = make_pet()
     task = make_task(recurrence="daily")
     pet.add_task(task)
 
     assert len(pet.get_tasks()) == 1
     task.mark_complete()
-    assert len(pet.get_tasks()) == 2, "A new occurrence should be added after completing a daily task"
-    assert pet.get_tasks()[-1].completed is False, "New occurrence should start incomplete"
-
-
-def test_mark_complete_does_not_queue_next_for_as_needed():
-    pet = make_pet()
-    task = make_task(recurrence="as_needed")
-    pet.add_task(task)
-
-    task.mark_complete()
-    assert len(pet.get_tasks()) == 1, "as_needed tasks should not create a next occurrence"
+    assert len(pet.get_tasks()) == 1, "Completing a task should not add a duplicate to the pet's task list"
 
 
 # --- Core behavior: conflict detection ---
@@ -214,32 +204,21 @@ def test_sorting_chronological_order_across_slots():
 
 # --- Required: recurrence logic ---
 
-def test_recurrence_daily_next_occurrence_is_fresh_clone():
+def test_recurrence_daily_task_appears_in_next_plan():
     pet = make_pet()
-    original = make_task(name="Give Meds", task_type="medication", duration=5, recurrence="daily")
-    pet.add_task(original)
+    task = make_task(name="Give Meds", task_type="medication", duration=5, recurrence="daily")
+    pet.add_task(task)
+    task.mark_complete()
 
-    original.mark_complete()
-
-    clone = pet.get_tasks()[-1]
-
-    # Clone is a separate object, not the same reference
-    assert clone is not original, "Next occurrence should be a new Task object"
-    # Clone preserves all key properties
-    assert clone.name == original.name
-    assert clone.recurrence == original.recurrence
-    assert clone.duration_minutes == original.duration_minutes
-    assert clone.priority == original.priority
-    assert clone.time_of_day == original.time_of_day
-    # Clone starts fresh
-    assert clone.completed is False, "Next occurrence should start incomplete"
-    # Clone appears in the next plan's incomplete tasks
+    # Daily tasks always return True from is_due_today(), so the same task
+    # appears in the next generated plan — no duplication needed
     owner = make_owner()
     owner.add_pet(pet)
     plan = DailyPlan(owner=owner)
     plan.generate()
-    incomplete_names = [t.name for t in plan.get_incomplete_tasks()]
-    assert "Give Meds" in incomplete_names, "Next occurrence should appear as incomplete in the next plan"
+
+    scheduled_names = [t.name for t in plan.scheduled_tasks]
+    assert "Give Meds" in scheduled_names, "Daily task should still appear in next plan after being completed"
 
 
 # --- Required: conflict detection ---

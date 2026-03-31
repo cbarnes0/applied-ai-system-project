@@ -59,10 +59,14 @@ This tradeoff is reasonable for this scenario because the app is aimed at a casu
 - How did you use AI tools during this project (for example: design brainstorming, debugging, refactoring)?
 - What kinds of prompts or questions were most helpful?
 
+I used AI throughout the whole project — starting with UML design, then implementing the logic, writing tests, and reviewing the code for issues. The most useful prompts were the ones that asked it to review what we already had and identify problems, like "what are the missing relationships or logic bottlenecks?" That kind of question surfaced real issues I hadn't thought about, like the `Task` not knowing which `Pet` it belonged to. Just asking it to "write the code" was less useful than asking it to think critically first.
+
 **b. Judgment and verification**
 
 - Describe one moment where you did not accept an AI suggestion as-is.
 - How did you evaluate or verify what the AI suggested?
+
+When reviewing the `generate()` method, AI suggested replacing the nested list comprehension with `itertools.chain.from_iterable`. It was technically more Pythonic but harder to read — especially for someone who hasn't seen `chain` before. I kept the nested comprehension because it reads like plain English ("for each pet, for each task") and there was no real performance reason to change it. I did accept the running total fix in the same review because that one had a clear reason behind it.
 
 ---
 
@@ -73,10 +77,14 @@ This tradeoff is reasonable for this scenario because the app is aimed at a casu
 - What behaviors did you test?
 - Why were these tests important?
 
+We ended up with 16 tests covering budget enforcement, sort order across and within time slots, recurrence logic, conflict detection, and edge cases like an owner with no pets or a weekly task with no days set. These were the most important to test because they're the behaviors the whole app depends on — if sorting is wrong or a task sneaks past the budget, the plan is useless. The edge cases mattered because they're the kind of thing a user could accidentally trigger from the UI.
+
 **b. Confidence**
 
 - How confident are you that your scheduler works correctly?
 - What edge cases would you test next if you had more time?
+
+4/5. The core logic is solid and all 16 tests pass. I'd knock it down a star because the Streamlit UI has zero automated tests, and the weekly recurrence tests rely on today's actual date — run them on the wrong day and you could get unexpected results. If I had more time I'd test what happens when an owner's budget is set to 0, and add some basic UI tests to make sure the generate button actually produces visible output.
 
 ---
 
@@ -86,10 +94,16 @@ This tradeoff is reasonable for this scenario because the app is aimed at a casu
 
 - What part of this project are you most satisfied with?
 
+The scheduling logic came out cleaner than I expected. The combination of time slots, priority, sort order, and budget enforcement all working together in `generate()` without it getting messy felt good. I was also happy with how the conflict detection ended up — it's a simple set-based check but it actually catches a real problem a user could run into.
+
 **b. What you would improve**
 
 - If you had another iteration, what would you improve or redesign?
 
+The task list showing up while the schedule is already on screen feels redundant — I'd probably move tasks into a collapsible section or a separate tab so the schedule is the main focus once it's generated. I'd also think about giving the owner a way to see what tasks are coming up tomorrow, not just today.
+
 **c. Key takeaway**
 
 - What is one important thing you learned about designing systems or working with AI on this project?
+
+Designing with UML first actually saved time. I would have run into the missing `pet_name` back-reference bug mid-implementation if we hadn't caught it during the diagram review. The lesson is that spending time on design upfront — even a rough one — is worth it because the cost of fixing a structural issue in a diagram is way lower than fixing it in code.

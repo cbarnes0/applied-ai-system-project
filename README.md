@@ -1,28 +1,62 @@
-# PawPal+ (Module 2 Project)
+# PawPal+
 
-You are building **PawPal+**, a Streamlit app that helps a pet owner plan care tasks for their pet.
+**PawPal+** is a pet care planning app that helps busy pet owners stay on top of their animals' daily needs. Set your time budget, add your pets and tasks, and let PawPal+ build a smart daily schedule — automatically sorted, conflict-checked, and ready to go.
 
-## Scenario
+---
 
-A busy pet owner needs help staying consistent with pet care. They want an assistant that can:
+## Screenshot
 
-- Track pet care tasks (walks, feeding, meds, enrichment, grooming, etc.)
-- Consider constraints (time available, priority, owner preferences)
-- Produce a daily plan and explain why it chose that plan
+![Demo Screenshot](PawPal_Screenshot.png)
 
-Your job is to design the system first (UML), then implement the logic in Python, then connect it to the Streamlit UI.
+---
 
-## What you will build
+## System Design
 
-Your final app should:
+![UML Class Diagram](uml_final.png)
 
-- Let a user enter basic owner + pet info
-- Let a user add/edit tasks (duration + priority at minimum)
-- Generate a daily schedule/plan based on constraints and priorities
-- Display the plan clearly (and ideally explain the reasoning)
-- Include tests for the most important scheduling behaviors
+---
 
-## Getting started
+## Features
+
+### Owner & Pet Management
+- Create an owner profile with a configurable daily time budget
+- Add multiple pets, each with their own independent task lists
+- All data persists across interactions within a session
+
+### Task Management
+- Add tasks to any pet with a name, type, duration, priority, time of day, and recurrence
+- Task types: `walk`, `feeding`, `medication`, `grooming`, `enrichment`
+- Priority levels: `high`, `medium`, `low`
+- Time slots: `morning`, `afternoon`, `evening`
+
+### Sorting by Time
+- The scheduler organizes tasks chronologically — morning before afternoon before evening
+- Within a time slot, a `sort_order` field controls exact sequencing (e.g. give meds before breakfast)
+- Priority and duration serve as automatic tie-breakers when sort order is equal
+
+### Daily & Weekly Recurrence
+- Tasks marked `daily` are automatically included in every plan
+- Tasks marked `weekly` are scheduled only on their configured days (e.g. Monday, Thursday)
+- When a daily or weekly task is marked complete, a fresh copy is automatically queued for the next occurrence
+- Tasks marked `as_needed` are excluded from automatic scheduling but can be forced in with an override flag
+
+### Budget Enforcement
+- The scheduler respects the owner's daily time budget and will not overschedule
+- Tasks that don't fit are collected in a skipped list — nothing is silently dropped
+- The UI shows how many minutes are used versus the total budget
+
+### Conflict Warnings
+- If the same type of task is scheduled twice for the same pet in the same time slot, the plan flags it as a conflict
+- Conflicts surface as visible warnings in the UI so the owner can resolve them
+
+### Filtering & Status Tracking
+- Filter the daily plan by pet to focus on one animal at a time
+- Incomplete tasks are tracked separately so you can see what still needs to be done
+- Tasks can be individually marked complete or reset
+
+---
+
+## Getting Started
 
 ### Setup
 
@@ -32,45 +66,18 @@ source .venv/bin/activate  # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### Suggested workflow
+### Run the app
 
-1. Read the scenario carefully and identify requirements and edge cases.
-2. Draft a UML diagram (classes, attributes, methods, relationships).
-3. Convert UML into Python class stubs (no logic yet).
-4. Implement scheduling logic in small increments.
-5. Add tests to verify key behaviors.
-6. Connect your logic to the Streamlit UI in `app.py`.
-7. Refine UML so it matches what you actually built.
+```bash
+streamlit run app.py
+```
 
-## Smarter Scheduling
+---
 
-The scheduler goes beyond a basic to-do list with a few key upgrades:
-
-- **Sort order** — tasks have a `sort_order` field so you can control exactly what happens first within a time slot (e.g. give meds before breakfast, not just "both are high priority morning tasks")
-- **Filtering** — you can pull tasks for a specific pet or see only what's still incomplete, useful for checking off the day as you go
-- **Recurring task auto-scheduling** — when you mark a daily or weekly task complete, a fresh copy is automatically queued so it shows up again next time without you having to re-add it
-- **Skipped tasks** — if your time budget runs out, the plan tells you what got dropped instead of silently leaving it out
-- **Conflict detection** — if the same type of task is scheduled twice for the same pet in the same time slot, the plan flags it as a conflict
-- **Override** — any task can be forced into today's plan with `override_today=True`, even if it's weekly or as-needed
-
-## Testing PawPal+
-
-### Run the tests
+## Testing
 
 ```bash
 python -m pytest tests/test_pawpal.py -v
 ```
 
-### What the tests cover
-
-17 tests across five areas:
-
-- **Budget enforcement** — tasks that exceed the daily time limit land in skipped, not silently disappear; a task that fits exactly on the budget line is always scheduled
-- **Sorting correctness** — tasks added in any order come out morning → afternoon → evening; `sort_order` controls sequencing within a slot
-- **Recurrence logic** — marking a daily or weekly task complete automatically creates a fresh incomplete copy with the same properties; `as_needed` tasks do not auto-queue
-- **Conflict detection** — duplicate task types for the same pet in the same time slot are flagged with the pet name and slot in the message; same type across different slots is not a conflict
-- **Edge cases** — owner with no pets, pet with no tasks, weekly task with no days configured, `as_needed` with and without override
-
-### Confidence level
-
-⭐⭐⭐⭐ (4/5)
+17 tests covering budget enforcement, sorting correctness, recurrence logic, conflict detection, and edge cases (empty pets, missing due days, override flags).

@@ -20,20 +20,8 @@ class Task:
         self._pet = None                    # back-reference to Pet, set in Pet.add_task()
 
     def mark_complete(self) -> None:
-        """Mark this task complete and queue the next occurrence for daily/weekly tasks."""
+        """Mark this task as completed."""
         self.completed = True
-        if self.recurrence in ("daily", "weekly") and self._pet is not None:
-            self._pet.add_task(Task(
-                name=self.name,
-                task_type=self.task_type,
-                duration_minutes=self.duration_minutes,
-                priority=self.priority,
-                recurrence=self.recurrence,
-                time_of_day=self.time_of_day,
-                due_days=self.due_days.copy(),
-                sort_order=self.sort_order,
-                override_today=False,
-            ))
 
     def clear_completion(self) -> None:
         """Reset this task to incomplete."""

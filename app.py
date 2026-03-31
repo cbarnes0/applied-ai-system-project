@@ -4,49 +4,19 @@ from pawpal_system import Owner, Pet, Task, DailyPlan
 st.set_page_config(page_title="PawPal+", page_icon="🐾", layout="centered")
 
 st.title("🐾 PawPal+")
-
-st.markdown(
-    """
-Welcome to the PawPal+ starter app.
-
-This file is intentionally thin. It gives you a working Streamlit app so you can start quickly,
-but **it does not implement the project logic**. Your job is to design the system and build it.
-
-Use this app as your interactive demo once your backend classes/functions exist.
-"""
-)
-
-with st.expander("Scenario", expanded=True):
-    st.markdown(
-        """
-**PawPal+** is a pet care planning assistant. It helps a pet owner plan care tasks
-for their pet(s) based on constraints like time, priority, and preferences.
-
-You will design and implement the scheduling logic and connect it to this Streamlit UI.
-"""
-    )
-
-with st.expander("What you need to build", expanded=True):
-    st.markdown(
-        """
-At minimum, your system should:
-- Represent pet care tasks (what needs to happen, how long it takes, priority)
-- Represent the pet and the owner (basic info and preferences)
-- Build a plan/schedule for a day that chooses and orders tasks based on constraints
-- Explain the plan (why each task was chosen and when it happens)
-"""
-    )
+st.caption("Your daily pet care planner.")
 
 st.divider()
 
 # --- Session State Initialization ---
-# Guard each key with "not in" so objects are only created once per session.
-# Without this guard, every button click would wipe all pets and tasks.
 if "owner" not in st.session_state:
     st.session_state.owner = None
 
 if "pets" not in st.session_state:
     st.session_state.pets = []
+
+if "plan" not in st.session_state:
+    st.session_state.plan = None
 
 # --- Owner Setup ---
 st.subheader("Owner")
@@ -55,6 +25,7 @@ available_hours = st.number_input("Hours available per day", min_value=0.5, max_
 
 if st.button("Save Owner"):
     st.session_state.owner = Owner(name=owner_name, available_hours_per_day=available_hours)
+    st.session_state.plan = None
     st.success(f"Owner '{owner_name}' saved!")
 
 st.divider()
@@ -140,12 +111,82 @@ else:
 st.divider()
 
 # --- Build Schedule ---
-st.subheader("Build Schedule")
+st.subheader("Daily Schedule")
 
-if st.button("Generate schedule"):
+if st.button("Generate Schedule"):
     if st.session_state.owner is None:
         st.warning("Save an owner first.")
     else:
         plan = DailyPlan(owner=st.session_state.owner)
         plan.generate()
-        st.text(plan.display())
+        st.session_state.plan = plan
+
+if st.session_state.plan:
+    plan = st.session_state.plan
+    budget_minutes = int(plan.owner.available_hours_per_day * 60)
+
+    # --- Summary metrics ---
+    col1, col2, col3 = st.columns(3)
+    col1.metric("Scheduled", f"{len(plan.scheduled_tasks)} tasks")
+    col2.metric("Time Used", f"{plan.total_duration_minutes} min")
+    col3.metric("Budget", f"{budget_minutes} min")
+
+    # --- Conflicts ---
+    for conflict in plan.conflicts:
+        st.warning(f"Conflict detected: {conflict}")
+
+    # --- Skipped tasks ---
+    skipped = plan.get_skipped_tasks()
+    if skipped:
+        with st.expander(f"Skipped ({len(skipped)} tasks — budget exceeded)"):
+            st.table([
+                {"Pet": t.pet_name, "Task": t.name, "Duration (min)": t.duration_minutes, "Priority": t.priority}
+                for t in skipped
+            ])
+
+    # --- Filter by pet ---
+    pet_names = ["All pets"] + [p.name for p in plan.owner.get_pets()]
+    selected_filter = st.selectbox("Filter by pet", pet_names)
+
+    # --- Tasks by time slot with checkboxes ---
+    for slot in ["morning", "afternoon", "evening"]:
+        if selected_filter == "All pets":
+            slot_tasks = [t for t in plan.scheduled_tasks if t.time_of_day == slot]
+        else:
+            slot_tasks = [t for t in plan.get_tasks_for_pet(selected_filter) if t.time_of_day == slot]
+
+        if not slot_tasks:
+            continue
+
+        st.markdown(f"**{slot.capitalize()}**")
+
+        # Column headers
+        h1, h2, h3, h4, h5, h6 = st.columns([1, 2, 3, 2, 2, 2])
+        h1.caption("Done")
+        h2.caption("Pet")
+        h3.caption("Task")
+        h4.caption("Type")
+        h5.caption("Duration")
+        h6.caption("Priority")
+
+        for task in slot_tasks:
+            c1, c2, c3, c4, c5, c6 = st.columns([1, 2, 3, 2, 2, 2])
+            checked = c1.checkbox("", value=task.completed, key=f"task_{id(task)}", label_visibility="collapsed")
+            if checked and not task.completed:
+                task.mark_complete()
+                st.rerun()
+            elif not checked and task.completed:
+                task.clear_completion()
+                st.rerun()
+            c2.write(task.pet_name)
+            c3.write(task.name)
+            c4.write(task.task_type)
+            c5.write(f"{task.duration_minutes} min")
+            c6.write(task.priority)
+
+    # --- Incomplete summary ---
+    incomplete = plan.get_incomplete_tasks()
+    if not incomplete:
+        st.success("All tasks complete for today!")
+    else:
+        st.info(f"{len(incomplete)} task(s) still pending.")
