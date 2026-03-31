@@ -41,3 +41,14 @@ pip install -r requirements.txt
 5. Add tests to verify key behaviors.
 6. Connect your logic to the Streamlit UI in `app.py`.
 7. Refine UML so it matches what you actually built.
+
+### Smarter Scheduling
+
+The scheduler goes beyond a basic to-do list with a few key upgrades:
+
+- **Sort order** — tasks have a `sort_order` field so you can control exactly what happens first within a time slot (e.g. give meds before breakfast, not just "both are high priority morning tasks")
+- **Filtering** — you can pull tasks for a specific pet or see only what's still incomplete, useful for checking off the day as you go
+- **Recurring task auto-scheduling** — when you mark a daily or weekly task complete, a fresh copy is automatically queued so it shows up again next time without you having to re-add it
+- **Skipped tasks** — if your time budget runs out, the plan tells you what got dropped instead of silently leaving it out
+- **Conflict detection** — if the same type of task is scheduled twice for the same pet in the same time slot, the plan flags it as a conflict
+- **Override** — any task can be forced into today's plan with `override_today=True`, even if it's weekly or as-needed

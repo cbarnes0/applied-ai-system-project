@@ -37,10 +37,18 @@ Yes. In the initial UML, `Task` had no reference to the pet it belonged to. Duri
 - What constraints does your scheduler consider (for example: time, priority, preferences)?
 - How did you decide which constraints mattered most?
 
+The scheduler considers three constraints: the owner's available hours per day (a hard budget cap), task priority (high / medium / low), and time of day (morning / afternoon / evening). Recurrence also acts as a soft constraint — only tasks that are due today enter the plan at all.
+
+Time budget was treated as the most important constraint because it's the one that forces real decisions. Without it, the scheduler is just a to-do list. Priority determines which tasks survive when the time budget of the owner runs out. high-priority tasks (medication, feeding, walks) are protected while low-priority ones (enrichment, grooming) are the first to be dropped. Time of day was added not as a hard limit but as an organizational layer, ensuring the plan reflects how a real day is structured rather than dumping everything into one flat list. Within a time slot, a `sort_order` field gives the owner fine-grained control over sequencing when priority alone isn't enough (e.g., give meds before breakfast).
+
 **b. Tradeoffs**
 
 - Describe one tradeoff your scheduler makes.
 - Why is that tradeoff reasonable for this scenario?
+
+The scheduler uses time of day buckets (morning, afternoon, evening) rather than checking for actual clock-time overlaps. Two 30-minute tasks both assigned to "morning" are treated as compatible as long as they fit within the owner's total daily budget — the scheduler never asks whether there are literally enough morning minutes to fit both. This means two tasks could theoretically both be labeled "morning" even if a real morning only has 45 minutes and the tasks together take 60.
+
+This tradeoff is reasonable for this scenario because the app is aimed at a casual pet owner planning their day, not a calendar tool with hard time blocks. Coarse slots are easy to fill out in the UI and easy to read at a glance. Adding exact clock-time scheduling would require start/end times on every task, per-slot time budgets, and overlap arithmetic — complexity that would make the app harder to use without meaningfully improving pet care outcomes.
 
 ---
 
