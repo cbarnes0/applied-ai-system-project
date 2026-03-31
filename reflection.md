@@ -7,6 +7,8 @@
 - Briefly describe your initial UML design.
 - What classes did you include, and what responsibilities did you assign to each?
 
+We want to start with the most important things. The main things is making sure your pet is getting walked, fed, and taking any medicine they need. They need to be able to schedule all of these. Obviously they will also need to be able to add their pets and ad these tasks per pet. They need to be able to see the tasks for the day in a simple format. 
+
 **b. Design changes**
 
 - Did your design change during implementation?
