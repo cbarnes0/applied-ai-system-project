@@ -4,9 +4,9 @@
 
 ---
 
-## Origin: PawPal (Modules 1–3)
+## Origin: PawPal
 
-This project is built on **PawPal**, originally developed in Modules 1–3 of the CodePath AI course. The original goal was to help pet owners who struggled to remember and organize daily care tasks across multiple animals. PawPal introduced a scheduling engine with four core classes — `Task`, `Pet`, `Owner`, and `DailyPlan` — that enforced time budgets, sorted tasks by time slot and priority, detected scheduling conflicts, and tracked task completion. It was a clean, deterministic system with no AI: every decision came from explicit rules and data.
+This project is built on **PawPal**, originally developed in Modules 2 of the CodePath AI course. The original goal was to help pet owners who struggled to remember and organize daily care tasks across multiple animals. PawPal introduced a scheduling engine with four core classes — `Task`, `Pet`, `Owner`, and `DailyPlan` — that enforced time budgets, sorted tasks by time slot and priority, detected scheduling conflicts, and tracked task completion. It was a clean, deterministic system with no AI: every decision came from explicit rules and data.
 
 ---
 
