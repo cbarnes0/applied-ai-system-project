@@ -1,5 +1,17 @@
+from dotenv import load_dotenv
+load_dotenv()
+
 import streamlit as st
 from pawpal_system import Owner, Pet, Task, DailyPlan
+from ai_assistant import (
+    validate_api_key,
+    sanitize_query,
+    is_off_topic,
+    retrieve_relevant_entries,
+    build_schedule_snapshot,
+    ask_care_advisor,
+    analyze_schedule,
+)
 
 st.set_page_config(page_title="PawPal+", page_icon="🐾", layout="centered")
 
@@ -17,6 +29,15 @@ if "pets" not in st.session_state:
 
 if "plan" not in st.session_state:
     st.session_state.plan = None
+
+if "ai_chat_history" not in st.session_state:
+    st.session_state.ai_chat_history = []
+
+if "last_analysis" not in st.session_state:
+    st.session_state.last_analysis = None
+
+if "ai_available" not in st.session_state:
+    st.session_state.ai_available = validate_api_key()
 
 # --- Owner Setup ---
 st.subheader("Owner")
@@ -190,3 +211,97 @@ if st.session_state.plan:
         st.success("All tasks complete for today!")
     else:
         st.info(f"{len(incomplete)} task(s) still pending.")
+
+# ── AI Care Advisor Sidebar ────────────────────────────────────────────────────
+
+with st.sidebar:
+    st.title("AI Care Advisor")
+
+    if not st.session_state.ai_available:
+        st.warning("Set your API key to enable AI features.")
+        st.code("export ANTHROPIC_API_KEY=sk-ant-...")
+        st.stop()
+
+    # --- Q&A Chat ---
+    st.subheader("Ask a Question")
+
+    for msg in st.session_state.ai_chat_history[-6:]:
+        with st.chat_message(msg["role"]):
+            st.write(msg["content"])
+
+    user_q = st.chat_input("Ask about your pets...")
+    if user_q:
+        clean_q = sanitize_query(user_q)
+        st.session_state.ai_chat_history.append({"role": "user", "content": clean_q})
+
+        if is_off_topic(clean_q):
+            reply = "I specialize in pet care advice. Try asking about feeding schedules, walking routines, grooming tips, or your current plan!"
+        else:
+            species_list = (
+                [p.species for p in st.session_state.owner.get_pets()]
+                if st.session_state.owner
+                else []
+            )
+            entries = retrieve_relevant_entries(clean_q, species_filter=species_list, top_k=3)
+            snapshot = build_schedule_snapshot(
+                owner=st.session_state.owner,
+                plan=st.session_state.plan,
+            )
+            with st.spinner("Thinking..."):
+                result = ask_care_advisor(clean_q, snapshot, entries)
+            reply = result["response"]
+
+        st.session_state.ai_chat_history.append({"role": "assistant", "content": reply})
+        st.rerun()
+
+    if st.button("Clear Chat", key="clear_chat"):
+        st.session_state.ai_chat_history = []
+        st.rerun()
+
+    st.divider()
+
+    # --- Schedule Analyzer ---
+    st.subheader("Analyze My Schedule")
+
+    if st.session_state.plan is None:
+        st.info("Generate a schedule first to enable analysis.")
+    else:
+        if st.button("Analyze My Schedule", key="analyze_btn"):
+            snapshot = build_schedule_snapshot(
+                owner=st.session_state.owner,
+                plan=st.session_state.plan,
+            )
+            with st.spinner("Analyzing schedule..."):
+                result = analyze_schedule(snapshot, st.session_state.owner)
+            st.session_state.last_analysis = result
+            st.rerun()
+
+        if st.session_state.last_analysis:
+            result = st.session_state.last_analysis
+            if not result["success"]:
+                st.error(f"Analysis failed: {result.get('error', 'Unknown error')}")
+            else:
+                analysis = result["analysis"]
+                st.caption(analysis["overall_assessment"])
+
+                if analysis.get("issues"):
+                    with st.expander(f"Issues ({len(analysis['issues'])})"):
+                        for issue in analysis["issues"]:
+                            icon = {"high": "🔴", "medium": "🟡", "low": "🟢"}.get(issue["severity"], "⚪")
+                            st.write(f"{icon} {issue['description']}")
+
+                if analysis.get("suggestions"):
+                    with st.expander(f"Suggestions ({len(analysis['suggestions'])})"):
+                        for s in analysis["suggestions"]:
+                            st.write(f"**{s['pet']}**: {s['action']}")
+                            st.caption(s["reason"])
+
+                if analysis.get("missing_task_types"):
+                    with st.expander("Possibly Missing Tasks"):
+                        for m in analysis["missing_task_types"]:
+                            st.write(f"**{m['pet']}** — {m['task_type']}: {m['note']}")
+
+                if analysis.get("positive_observations"):
+                    with st.expander("What's Working Well"):
+                        for obs in analysis["positive_observations"]:
+                            st.write(f"- {obs}")

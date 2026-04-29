@@ -3,3 +3,12 @@ __pycache__/
 .venv_new/
 .pytest_cache/
 .DS_Store
+
+# API key and environment
+.env
+
+# AI interaction logs
+logs/
+
+# Claude Code internal files
+.claude/

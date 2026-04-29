@@ -1,0 +1,227 @@
+{
+  "version": "1.0",
+  "entries": [
+    {
+      "id": "dog-walk-frequency",
+      "species": ["dog"],
+      "task_types": ["walk"],
+      "category": "exercise",
+      "title": "Dog Walking Frequency",
+      "facts": [
+        "Adult dogs generally need at least 30 minutes to 2 hours of exercise per day depending on breed and age.",
+        "High-energy breeds (Labrador, Border Collie, Husky) require 60-90 minutes of vigorous daily exercise.",
+        "Low-energy or senior dogs may be satisfied with two 15-minute walks per day.",
+        "Puppies under 6 months should have exercise limited to 5 minutes per month of age, twice daily, to protect developing joints.",
+        "Walking in the morning is recommended to help dogs eliminate overnight waste and set a calm tone for the day.",
+        "Skipping walks for multiple consecutive days can increase anxiety and destructive behavior in dogs."
+      ],
+      "keywords": ["walk", "exercise", "dog", "daily", "breed", "energy", "puppy", "senior", "outside", "outdoor"]
+    },
+    {
+      "id": "dog-feeding-schedule",
+      "species": ["dog"],
+      "task_types": ["feeding"],
+      "category": "nutrition",
+      "title": "Dog Feeding Guidelines",
+      "facts": [
+        "Adult dogs should typically be fed twice daily — once in the morning and once in the evening.",
+        "Puppies under 6 months generally need three to four meals per day.",
+        "Senior dogs (7+ years) may benefit from smaller, more frequent meals to ease digestion.",
+        "Always provide fresh water alongside meals.",
+        "Avoid feeding large dogs immediately before or after vigorous exercise to reduce bloat risk.",
+        "Consistent feeding times help regulate digestion and set behavioral expectations."
+      ],
+      "keywords": ["feeding", "food", "meal", "diet", "dog", "puppy", "senior", "nutrition", "eat", "hunger"]
+    },
+    {
+      "id": "dog-medication-admin",
+      "species": ["dog"],
+      "task_types": ["medication"],
+      "category": "health",
+      "title": "Administering Medication to Dogs",
+      "facts": [
+        "Most oral dog medications can be hidden in a small amount of food like peanut butter or a pill pocket.",
+        "Never skip a scheduled medication dose without consulting a veterinarian.",
+        "Administer medications at the same time each day to maintain consistent blood levels.",
+        "Topical flea/tick treatments should be applied to the base of the neck where the dog cannot lick.",
+        "Log each dose given; double-dosing is dangerous and easy to accidentally do with multiple caretakers.",
+        "Store all medications as directed — some require refrigeration."
+      ],
+      "keywords": ["medication", "medicine", "pill", "dose", "treatment", "flea", "tick", "dog", "health", "vet", "drug"]
+    },
+    {
+      "id": "dog-grooming",
+      "species": ["dog"],
+      "task_types": ["grooming"],
+      "category": "grooming",
+      "title": "Dog Grooming Basics",
+      "facts": [
+        "Short-haired dogs generally need brushing once a week; long-haired breeds may need daily brushing.",
+        "Most dogs need bathing every 4 to 6 weeks, though active or outdoor dogs may need more frequent baths.",
+        "Check and clean ears weekly to prevent infection, especially in floppy-eared breeds.",
+        "Trim nails every 3 to 4 weeks; overgrown nails can cause pain and posture problems.",
+        "Brush teeth daily or at least 3 times per week to prevent periodontal disease.",
+        "Start grooming routines early in a dog's life to build tolerance and comfort."
+      ],
+      "keywords": ["grooming", "brush", "brushing", "bath", "bathing", "nail", "nails", "ear", "teeth", "dog", "hygiene", "coat", "fur"]
+    },
+    {
+      "id": "dog-enrichment",
+      "species": ["dog"],
+      "task_types": ["enrichment"],
+      "category": "mental_health",
+      "title": "Dog Mental Enrichment",
+      "facts": [
+        "Dogs need mental stimulation in addition to physical exercise to prevent boredom and anxiety.",
+        "Puzzle feeders and snuffle mats give dogs an outlet for natural foraging instincts.",
+        "Training sessions of 5 to 15 minutes count as enrichment and strengthen the human-dog bond.",
+        "Rotating toys every few days keeps novelty high and maintains engagement.",
+        "Social play with other dogs is enriching for most social breeds.",
+        "Lack of enrichment is a common cause of destructive behavior like chewing and excessive barking."
+      ],
+      "keywords": ["enrichment", "play", "mental", "stimulation", "training", "toy", "dog", "boredom", "puzzle", "snuffle", "engage"]
+    },
+    {
+      "id": "cat-feeding-schedule",
+      "species": ["cat"],
+      "task_types": ["feeding"],
+      "category": "nutrition",
+      "title": "Cat Feeding Guidelines",
+      "facts": [
+        "Adult cats can be fed twice daily or via controlled free-feeding depending on the cat's weight goals.",
+        "Wet food is recommended at least partially because cats have low natural thirst drive and benefit from moisture in food.",
+        "Kittens under 6 months need three to four small meals per day.",
+        "Senior cats (10+ years) may need specialized senior-formula food with adjusted protein and phosphorus levels.",
+        "Do not leave uneaten wet food out for more than 30 minutes to prevent bacterial growth.",
+        "Avoid sudden food changes — transition over 7 to 10 days to prevent digestive upset."
+      ],
+      "keywords": ["feeding", "food", "meal", "cat", "wet", "dry", "diet", "nutrition", "kitten", "eat", "hunger"]
+    },
+    {
+      "id": "cat-medication-admin",
+      "species": ["cat"],
+      "task_types": ["medication"],
+      "category": "health",
+      "title": "Administering Medication to Cats",
+      "facts": [
+        "Cats are notoriously difficult to medicate; a pill gun or pill pocket can make the process easier.",
+        "Liquid medications can sometimes be mixed with a small amount of palatable food.",
+        "Never give a cat medication intended for dogs or humans without veterinary guidance.",
+        "After giving an oral pill, offer a small amount of water or wet food to ensure it travels to the stomach.",
+        "Scruffing (gently holding the back of the neck) can temporarily calm a resistant cat during medication.",
+        "Topical medications applied between the shoulder blades are harder for cats to reach and lick off."
+      ],
+      "keywords": ["medication", "medicine", "pill", "dose", "cat", "liquid", "treatment", "health", "vet", "drug", "tablet"]
+    },
+    {
+      "id": "cat-grooming",
+      "species": ["cat"],
+      "task_types": ["grooming"],
+      "category": "grooming",
+      "title": "Cat Grooming Basics",
+      "facts": [
+        "Short-haired cats usually self-groom adequately but benefit from weekly brushing to reduce hairballs.",
+        "Long-haired cats (Persians, Maine Coons) need daily brushing to prevent painful mats.",
+        "Cats rarely need baths unless they get into something or have a skin condition.",
+        "Trim cat nails every 2 to 3 weeks to prevent snagging and over-curling into paw pads.",
+        "Dental disease affects over 70% of cats by age 3 — weekly teeth brushing is recommended.",
+        "Check ears weekly for wax buildup, odor, or discharge, which may indicate infection or mites."
+      ],
+      "keywords": ["grooming", "brush", "brushing", "bath", "bathing", "nail", "nails", "ear", "teeth", "cat", "hairball", "hygiene", "coat", "fur"]
+    },
+    {
+      "id": "cat-enrichment",
+      "species": ["cat"],
+      "task_types": ["enrichment"],
+      "category": "mental_health",
+      "title": "Cat Mental Enrichment",
+      "facts": [
+        "Indoor cats need at least 15 to 30 minutes of active play per day to meet their predatory instincts.",
+        "Wand toys and laser pointers simulate prey movement and provide satisfying exercise.",
+        "Window perches with an outdoor view provide passive enrichment through visual and olfactory stimulation.",
+        "Puzzle feeders slow eating and engage problem-solving instincts in cats.",
+        "Cats generally prefer several short play sessions over one long one.",
+        "Lack of enrichment in indoor cats correlates with obesity, over-grooming, and aggression."
+      ],
+      "keywords": ["enrichment", "play", "mental", "stimulation", "toy", "laser", "cat", "indoor", "boredom", "puzzle", "wand", "engage"]
+    },
+    {
+      "id": "general-medication-safety",
+      "species": ["dog", "cat", "other"],
+      "task_types": ["medication"],
+      "category": "health",
+      "title": "General Medication Safety",
+      "facts": [
+        "Always complete the full course of antibiotics even if symptoms disappear early.",
+        "Never share medications between pets of different species without explicit veterinary approval.",
+        "Store medications away from food, heat, and humidity.",
+        "Keep a medication log with the date, time, and dose to share with your vet at checkups.",
+        "If a dose is missed, do not double-dose on the next scheduled time unless your vet instructs otherwise.",
+        "Be aware of side effects and contact a vet immediately if unusual symptoms appear after medicating."
+      ],
+      "keywords": ["medication", "safety", "dose", "antibiotic", "log", "vet", "side", "effect", "miss", "store"]
+    },
+    {
+      "id": "general-feeding-water",
+      "species": ["dog", "cat", "other"],
+      "task_types": ["feeding"],
+      "category": "nutrition",
+      "title": "Water and Hydration for Pets",
+      "facts": [
+        "Fresh water should be available to all pets at all times.",
+        "Wash water bowls daily to prevent biofilm and bacterial buildup.",
+        "Some pets prefer running water — pet fountains can encourage cats and dogs to drink more.",
+        "Dehydration signs include lethargy, sunken eyes, dry gums, and reduced skin elasticity.",
+        "During hot weather or after vigorous exercise, offer water before food."
+      ],
+      "keywords": ["water", "hydration", "bowl", "drinking", "fountain", "dehydration", "drink", "thirsty", "wet"]
+    },
+    {
+      "id": "other-pet-general",
+      "species": ["other"],
+      "task_types": ["walk", "feeding", "medication", "grooming", "enrichment"],
+      "category": "general",
+      "title": "Care Tips for Small Pets and Exotic Animals",
+      "facts": [
+        "Rabbits, guinea pigs, birds, and reptiles each have species-specific care needs — consult a species-knowledgeable vet.",
+        "Small mammals like rabbits need at least 3 to 4 hours of supervised free-roam time daily.",
+        "Birds require mental enrichment through foraging toys, varied food presentation, and interaction.",
+        "Reptiles are ectothermic and depend on precisely maintained temperature gradients for health.",
+        "Routine veterinary checkups are critical for exotic pets since illness signs can be subtle until advanced.",
+        "Enrichment, social time, and mental stimulation are important for virtually every pet species."
+      ],
+      "keywords": ["other", "rabbit", "guinea", "pig", "bird", "reptile", "exotic", "small", "animal", "care", "hamster", "ferret"]
+    },
+    {
+      "id": "schedule-time-slot-morning",
+      "species": ["dog", "cat", "other"],
+      "task_types": ["walk", "feeding", "medication", "grooming", "enrichment"],
+      "category": "scheduling",
+      "title": "Morning Scheduling Best Practices",
+      "facts": [
+        "Feeding and medication tasks are most reliably completed in the morning when daily routines are fresh.",
+        "Morning walks help dogs eliminate overnight waste and benefit from cooler temperatures.",
+        "Cats tend to be most active at dawn — morning play sessions align with their natural activity peaks.",
+        "High-priority tasks should generally be placed in the morning to ensure they are not missed.",
+        "Morning grooming can double as a health check — inspect eyes, ears, and coat condition."
+      ],
+      "keywords": ["morning", "schedule", "routine", "feeding", "walk", "medication", "grooming", "time", "slot", "early"]
+    },
+    {
+      "id": "schedule-budget-tips",
+      "species": ["dog", "cat", "other"],
+      "task_types": ["walk", "feeding", "medication", "grooming", "enrichment"],
+      "category": "scheduling",
+      "title": "Managing a Tight Time Budget",
+      "facts": [
+        "Combine grooming with health inspection to save time — brushing while checking ears and eyes takes no extra time.",
+        "Feeding takes 5 to 10 minutes of active time even for multiple pets if bowls are pre-set the night before.",
+        "Short enrichment sessions of 5 to 10 minutes are still meaningful and better than none at all.",
+        "Medication that is hidden in food requires minimal additional time if meals are already scheduled.",
+        "Group tasks that occur in the same location to reduce transition time.",
+        "Weekly grooming tasks can be broken into daily micro-sessions to spread the time cost."
+      ],
+      "keywords": ["time", "budget", "schedule", "efficiency", "tips", "busy", "short", "quick", "save", "combine", "tight"]
+    }
+  ]
+}
