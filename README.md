@@ -27,9 +27,11 @@ This matters because pet care is genuinely complex — different species, differ
 
 ---
 
-## System Design
+## Video Demo
 
-![UML Class Diagram](assets/uml_final.png)
+[Watch the demo on Loom](https://www.loom.com/share/ee32574fbfaf4ada96b81e2820eaeda9)
+
+The video cuts off at the end because of Loom's 5 minute limit, but that leads us to the next section.
 
 ### Architecture Diagram
 
